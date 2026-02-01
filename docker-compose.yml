@@ -1,0 +1,52 @@
+services:
+  frontend-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_HOST=0.0.0.0
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    # по желанию: если нужен интерактив
+    stdin_open: true
+    tty: true
+
+  frontend:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # пример прокидывания переменных сборки
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend-build
+    # prod-образ — это nginx runtime, без volumes
+    # если нужен единый пайплайн, оставьте только этот сервис
+
+  frontend-build:
+    profiles: ["prod"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    volumes:
+      - build_cache:/app/node_modules
+    # этот сервис прогревает кэш зависимостей в многоэтапной сборке
+
+volumes:
+  build_cache:
+
+# examples:
+# docker compose --profile=dev up -d --build
+# docker compose --profile=prod up -d --build
