@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import classes from './NewPost.module.css';
 
 
 
-function NewPost({ changeBodyHandler }) {
+function NewPost({ changeBodyHandler, cancel }) {
 
   return (
     <form className={classes.form}>
@@ -14,6 +13,10 @@ function NewPost({ changeBodyHandler }) {
       <p>
         <label htmlFor="name">Your name</label>
         <input type="text" id="name" required />
+      </p>
+      <p className={classes.actions}>
+        <button type="button" onClick={cancel}>Cancel</button>
+        <button>Submit</button>
       </p>
     </form>
   );
