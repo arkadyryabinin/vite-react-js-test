@@ -1,10 +1,10 @@
-import classes from './Modal.module.css';
+import { backdrop, modal } from './Modal.module.css';
 
-function Modal({ children }) {
+function Modal({ children, onClickHandler }) {
   return (
     <>
-      <div className={classes.backdrop} />
-      <dialog open={true} className={classes.modal}>
+      <div className={backdrop} onClick={onClickHandler}/>
+      <dialog open={true} className={modal}>
         {children}
       </dialog>
     </>
