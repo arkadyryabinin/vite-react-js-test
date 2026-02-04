@@ -3,7 +3,7 @@ import classes from './NewPost.module.css';
 
 
 
-function NewPost({ cancel }) {
+function NewPost({ cancel, addPost }) {
   const [author, setAuthor] = useState('');
   const [text, setText] = useState('');
   
@@ -20,7 +20,8 @@ function NewPost({ cancel }) {
       body: text,
       author,
     };
-    console.log(postData);
+    // console.log(postData);
+    addPost(postData);
     cancel();
   }
   return (
