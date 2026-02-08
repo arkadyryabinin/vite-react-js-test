@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Post from './Post';
 import NewPost from './NewPost';
 import Modal from './Modal';
@@ -6,6 +6,14 @@ import classes from './PostsList.module.css';
 
 function List({ toggleModal, isOpened }) {
   const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch('http://localhost:3000/api/posts');
+      const resData = await response.json();
+      setPosts(resData.posts);
+    }
+    fetchPosts();
+  }, []);
   const addPost = (postData) => {
     fetch('http://localhost:3000/api/posts', {
       method: 'POST',
