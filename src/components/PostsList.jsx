@@ -7,6 +7,13 @@ import classes from './PostsList.module.css';
 function List({ toggleModal, isOpened }) {
   const [posts, setPosts] = useState([]);
   const addPost = (postData) => {
+    fetch('http://localhost:3000/api/posts', {
+      method: 'POST',
+      body: JSON.stringify(postData),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
     setPosts((current) => [postData, ...current]);
   }
   const postsList = posts.map((element, index) => (<Post author={element.author} body={element.body} key={index} />));
