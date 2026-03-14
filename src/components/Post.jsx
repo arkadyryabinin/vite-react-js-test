@@ -9,4 +9,4 @@ function Post({ author, body }) {
   );
 }
 
-export default Post; 
+export default Post;
